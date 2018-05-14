@@ -51,6 +51,22 @@ object Chapter4 {
   }
 
 
+  implicit val listApplicative = new Applicative[List] {
+
+    override def pure[A](a: A): List[A] = List(a)
+
+    override def apply[A, B](fa: List[A])(ff: List[A ⇒ B]): List[B] = {
+      for {
+        a   ← fa
+        fx  ← ff
+      } yield fx(a)
+    }
+  }
+
+  implicit val listOfOptionsApplicative = listApplicative.compose(optionApplicative)
+  implicit val optionOfListApplicative = optionApplicative.compose(listApplicative)
+
+
   import Monad.MonadOps
 
   def sumSquare[F[_]: Monad](a: F[Int], b: F[Int]): F[Int] = for {
@@ -58,16 +74,31 @@ object Chapter4 {
     y <- b
   } yield x * x + y * y
 
+  def transform[F[_], A, B](fa: F[A])(fx: A ⇒ B)(implicit applicative: Applicative[F]) = {
+    applicative.apply(fa)(applicative.pure(fx))
+  }
+
 
   def main(args: Array[String]): Unit = {
 //    sumSquare(Some(5): Option[Int], Some(10)) foreach(println(_))
 //    println(sumSquare(5: Id[Int], 10: Id[Int]) map (_ + 1))
 //    println(sumSquare(5: Id[Int], 10: Id[Int]) flatMap (_ + 1))
 
-    println(optionApplicative.map4WithTuple3(Some(1), Some(2), Some(3), Some(4))(_+_+_+_))
-    println(optionApplicative.map4(Some(1), Some(2), Some(3), Some(4))(_+_+_+_))
+//    println(optionApplicative.map4WithTuple3(Some(1), Some(2), Some(3), Some(4))(_+_+_+_))
+//    println(optionApplicative.map4(Some(1), Some(2), Some(3), Some(4))(_+_+_+_))
+
+    println(transform(Some(10): Option[Int])(a ⇒ s"Hello $a"))
+    println(transform(List(1, 2))(a ⇒ s"Hello $a"))
+    println(transform(List(Some(1), Some(2)))(a ⇒ s"Hello $a"))
+    println(transform(Some(List(1, 2)): Option[List[Int]])(a ⇒ s"Hello $a"))
+
+    println(listOfOptionsApplicative.apply(List(Some(1): Option[Int], Some(2), None))(List(
+                                                                                          Some(a ⇒ s"Hello $a"),
+                                                                                          Some(a ⇒ s"Goodbye $a")): List[Option[Int ⇒ String]]))
 
   }
+
+
 
 
 
