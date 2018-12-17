@@ -1,24 +1,28 @@
 package chapter4
 
 import chapter2.Functor
+import chapter6.SemiGroupal
 
 import scala.language.existentials
 
-trait Applicative[F[_]] extends Functor[F] {
+trait Applicative[F[_]] extends Functor[F] with SemiGroupal[F] {
   self ⇒
 
   def pure[A](a: A): F[A]
 
   def apply[A, B](fa: F[A])(ff: F[A ⇒ B]): F[B]
 
-  def apply2[A, B, Z](fa: F[A], fb: F[B])(ff: F[(A, B) ⇒ Z]): F[Z] = {
-    apply(fa)(apply(fb)(map(ff)(f ⇒ b ⇒ a ⇒ f(a, b))))
-  }
-
   override def map[A, B](fa: F[A])(f: A ⇒ B): F[B] = {
     apply(fa)(pure(f))
   }
 
+  override def product[A, B](fa: F[A], fb: F[B]) : F[(A, B)] = {
+    apply(fb)(map(fa)(a ⇒ b ⇒ (a,b)))
+  }
+
+  def apply2[A, B, Z](fa: F[A], fb: F[B])(ff: F[(A, B) ⇒ Z]): F[Z] = {
+    apply(fa)(apply(fb)(map(ff)(f ⇒ b ⇒ a ⇒ f(a, b))))
+  }
 
   def map2[A, B, Z](fa: F[A], fb: F[B])(f: (A, B) ⇒ Z): F[Z] = {
     apply(fa)(map(fb)(b ⇒ f(_, b)))

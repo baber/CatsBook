@@ -24,9 +24,9 @@ object ProductWithFlatmap {
 
 
   def main(args: Array[String]): Unit = {
-    val list = List(1, 3, 5, 4, 2)
-    println(sort(list))
-//    product(Some(1) : Option[Int], Some(2))
+//    val list = List(1, 3, 5, 4, 2)
+//    println(sort(list))
+    println(product(Some(1) : Option[Int], Some(2)))
   }
 
 
