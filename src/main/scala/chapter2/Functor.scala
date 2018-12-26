@@ -1,7 +1,7 @@
 package chapter2
 
 
-trait Functor[F[_]] { self ⇒
+trait Functor[F[_]] extends Any { self ⇒
 
   def map[A, B](fa: F[A])(f: A ⇒ B) : F[B]
 

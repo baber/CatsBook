@@ -9,6 +9,7 @@ object FoldableInstances {
       fa.foldLeft(acc)(fx)
     }
 
+
     def foldRight[A, B](fa: List[A])(acc: B)(fx: (A, B) ⇒ B): B = {
       fa match {
         case x :: Nil ⇒ fx(x, acc)
@@ -22,6 +23,7 @@ object FoldableInstances {
         case x::xs            ⇒ fx(x, acc.flatMap(b ⇒ foldRightWithEval(xs, Eval.now(b))(fx)))
       }
     }
+
   }
 
   implicit def OptionFoldable: Foldable[Option] = new Foldable[Option] {

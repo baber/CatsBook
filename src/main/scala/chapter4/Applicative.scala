@@ -63,6 +63,12 @@ trait Applicative[F[_]] extends Functor[F] with SemiGroupal[F] {
 
 }
 
+object Applicative {
+
+  def apply[F[_]](implicit F: Applicative[F]) = F
+
+}
+
 trait ApplicativeLaws[F[_]] {
 
   implicit def f: Applicative[F]

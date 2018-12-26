@@ -8,6 +8,10 @@ object FoldableExperiments {
 
 
   def main(args: Array[String]): Unit = {
+    val list = Stream.iterate(1, 10000000)(_ + 1).toList
+
+
+    println(s"working...")
     println(listFoldRightWithEval().value)
   }
 
@@ -34,5 +38,6 @@ object FoldableExperiments {
 
     Foldable[Option].foldLeft(option)(10)(_ * _)
   }
+
 
 }
