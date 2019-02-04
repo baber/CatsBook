@@ -37,12 +37,17 @@ object FoldableInstances {
 
     def foldRight[A, B](fa: Option[A])(acc: B)(fx: (A, B) ⇒ B): B = {
       fa match {
-        case Some(a) ⇒ fx(a, acc)
-        case _ ⇒ acc
+        case Some(a)  ⇒ fx(a, acc)
+        case _        ⇒ acc
       }
     }
 
-    def foldRightWithEval[A, B](fa: Option[A], acc: Eval[B])(f: (A, Eval[B]) ⇒ Eval[B]): Eval[B] = ???
+    def foldRightWithEval[A, B](fa: Option[A], acc: Eval[B])(f: (A, Eval[B]) ⇒ Eval[B]): Eval[B] = {
+      fa match {
+        case Some(a)  ⇒ f(a, acc)
+        case _        ⇒ acc
+      }
+    }
 
   }
 }

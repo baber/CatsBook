@@ -5,10 +5,8 @@ name := "CatsBook"
 version := "1.0"
 
 scalaVersion := "2.12.4"
-
 scalacOptions ++= List("-Ypartial-unification", "-language:higherKinds")
 addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.5")
-
 
 
 libraryDependencies ++= Seq(

@@ -5,7 +5,7 @@ import chapter6.SemiGroupal
 
 import scala.language.existentials
 
-trait Applicative[F[_]] extends Functor[F] with SemiGroupal[F] {
+trait Applicative[F[_]] extends Any with Functor[F] with SemiGroupal[F] {
   self ⇒
 
   def pure[A](a: A): F[A]

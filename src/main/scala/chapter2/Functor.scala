@@ -30,3 +30,9 @@ trait Functor[F[_]] extends Any { self ⇒
 //  def compose[G[_]](implicit G: Functor[G]) : F[G[?]] = ???
 
 }
+
+object Functor {
+
+  def apply[F[_]](implicit F : Functor[F]) = F
+
+}

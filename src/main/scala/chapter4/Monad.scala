@@ -1,8 +1,7 @@
 package chapter4
 
-import chapter2.Functor
 
-trait Monad[F[_]] extends Applicative[F] {
+trait Monad[F[_]] extends Any with Applicative[F] {
 
   def pure[A](a: A): F[A]
 

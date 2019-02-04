@@ -1,6 +1,6 @@
 package chapter6
 
-trait SemiGroupal[F[_]] {
+trait SemiGroupal[F[_]] extends Any {
   def product[A, B](fa: F[A], fb: F[B]) : F[(A, B)]
 }
 

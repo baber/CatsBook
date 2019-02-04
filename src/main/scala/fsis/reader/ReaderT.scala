@@ -27,12 +27,17 @@ case class ReaderT[F[_], A, B](run: A ⇒ F[B]) {
     ReaderT(a ⇒ F.flatMap(run(a))(r.run))
   }
 
+
 }
 
 object ReaderT {
 
   def ask[F[_], A]()(implicit A : Applicative[F]) : ReaderT[F, A, A] = {
     ReaderT(A.pure)
+  }
+
+  def liftF[F[_], A, B](fb: F[B]) : ReaderT[F, A, B] = {
+    ReaderT(_ ⇒ fb)
   }
 
   implicit def ReaderTMonad[F[_], Z, ?]()(implicit M : Monad[F]) : Monad[ReaderT[F, Z, ?]] = new Monad[ReaderT[F, Z, ?]] {
